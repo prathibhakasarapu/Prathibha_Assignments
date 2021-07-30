@@ -1,0 +1,893 @@
+SECTION 0
+--------------------------------------------------------------------------------------------------------
+
+HP@LAPTOP-80894FQP MINGW64 ~
+$ mkdir project_dir
+
+HP@LAPTOP-80894FQP MINGW64 ~
+$ cd project_dir
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir
+$ git init
+Initialized empty Git repository in C:/Users/HP/project_dir/.git/
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ touch index.html
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git add index.html
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git commit -m "added index.html"
+[master (root-commit) c684778] added index.html
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 index.html
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git status
+On branch master
+nothing to commit, working tree clean
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ vi index.html
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   index.html
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ touch info.txt
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git rm --cached index.html
+rm 'index.html'
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git status
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        deleted:    index.html
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        index.html
+        info.txt
+
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ touch .gitignore
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git status
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        deleted:    index.html
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .gitignore
+        index.html
+        info.txt
+
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git status
+On branch master
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        deleted:    index.html
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .gitignore
+        index.html
+
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git add index.html
+The file will have its original line endings in your working directory
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git commit -m "modified index"
+[master 32453b9] modified index
+ 1 file changed, 8 insertions(+)
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git log
+commit 32453b95533f7516686df10a8824fdd193aa11c8 (HEAD -> master)
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:30:04 2021 +0530
+
+    modified index
+
+commit c684778840d2d8e8a6146c483e20c307a465cc99
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:12:08 2021 +0530
+
+    added index.html
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ vi index.html
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git add index.html
+warning: LF will be replaced by CRLF in index.html.
+The file will have its original line endings in your working directory
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git commit -m "latest index file"
+[master a0d5e5c] latest index file
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git log
+commit a0d5e5cd452a7b1f671085365655017892e01761 (HEAD -> master)
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:36:13 2021 +0530
+
+    latest index file
+
+commit 32453b95533f7516686df10a8824fdd193aa11c8
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:30:04 2021 +0530
+
+    modified index
+
+commit c684778840d2d8e8a6146c483e20c307a465cc99
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:12:08 2021 +0530
+
+    added index.html
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ ^C
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git revert a0d5e5cd452a7b1f671085365655017892e01761
+[master 8ac720d] Revert "latest index file"
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git log
+commit 8ac720d248e3db30f91932ad2727430fa11ac676 (HEAD -> master)
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:37:18 2021 +0530
+
+    Revert "latest index file"
+
+    This reverts commit a0d5e5cd452a7b1f671085365655017892e01761.
+
+commit a0d5e5cd452a7b1f671085365655017892e01761
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:36:13 2021 +0530
+
+    latest index file
+
+commit 32453b95533f7516686df10a8824fdd193aa11c8
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:30:04 2021 +0530
+
+    modified index
+
+commit c684778840d2d8e8a6146c483e20c307a465cc99
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:12:08 2021 +0530
+
+    added index.html
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ vi index.html
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git add index.html
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git log
+commit 8ac720d248e3db30f91932ad2727430fa11ac676 (HEAD -> master)
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:37:18 2021 +0530
+
+    Revert "latest index file"
+
+    This reverts commit a0d5e5cd452a7b1f671085365655017892e01761.
+
+commit a0d5e5cd452a7b1f671085365655017892e01761
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:36:13 2021 +0530
+
+    latest index file
+
+commit 32453b95533f7516686df10a8824fdd193aa11c8
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:30:04 2021 +0530
+
+    modified index
+
+commit c684778840d2d8e8a6146c483e20c307a465cc99
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:12:08 2021 +0530
+
+    added index.html
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git commit -m "current index file"
+[master cf3033c] current index file
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git log
+commit cf3033cc53800fe3efce20b693a283cfe2d83736 (HEAD -> master)
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:40:59 2021 +0530
+
+    current index file
+
+commit 8ac720d248e3db30f91932ad2727430fa11ac676
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:37:18 2021 +0530
+
+    Revert "latest index file"
+
+    This reverts commit a0d5e5cd452a7b1f671085365655017892e01761.
+
+commit a0d5e5cd452a7b1f671085365655017892e01761
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:36:13 2021 +0530
+
+    latest index file
+
+commit 32453b95533f7516686df10a8824fdd193aa11c8
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:30:04 2021 +0530
+
+    modified index
+
+commit c684778840d2d8e8a6146c483e20c307a465cc99
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:12:08 2021 +0530
+
+    added index.html
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git revert cf3033cc53800fe3efce20b693a283cfe2d83736
+[master c12599d] Revert "current index file"
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git config --global alias.my-add add
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git my-add index.html
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git commit -m "final index file"
+On branch master
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .gitignore
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git log
+commit c12599dfc76882fc271d849eb2da030d4706c819 (HEAD -> master)
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:41:48 2021 +0530
+
+    Revert "current index file"
+
+    This reverts commit cf3033cc53800fe3efce20b693a283cfe2d83736.
+
+commit cf3033cc53800fe3efce20b693a283cfe2d83736
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:40:59 2021 +0530
+
+    current index file
+
+commit 8ac720d248e3db30f91932ad2727430fa11ac676
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:37:18 2021 +0530
+
+    Revert "latest index file"
+
+    This reverts commit a0d5e5cd452a7b1f671085365655017892e01761.
+
+commit a0d5e5cd452a7b1f671085365655017892e01761
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:36:13 2021 +0530
+
+    latest index file
+
+commit 32453b95533f7516686df10a8824fdd193aa11c8
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:30:04 2021 +0530
+
+    modified index
+
+commit c684778840d2d8e8a6146c483e20c307a465cc99
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:12:08 2021 +0530
+
+    added index.html
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ vi index.html
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git my-add index.html
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git commit -m "final index file"
+[master 5a015ef] final index file
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git log
+commit 5a015ef2e98b2e7dd095d605e50c1216fd05cef3 (HEAD -> master)
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:46:02 2021 +0530
+
+    final index file
+
+commit c12599dfc76882fc271d849eb2da030d4706c819
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:41:48 2021 +0530
+
+    Revert "current index file"
+
+    This reverts commit cf3033cc53800fe3efce20b693a283cfe2d83736.
+
+commit cf3033cc53800fe3efce20b693a283cfe2d83736
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:40:59 2021 +0530
+
+    current index file
+
+commit 8ac720d248e3db30f91932ad2727430fa11ac676
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:37:18 2021 +0530
+
+    Revert "latest index file"
+
+    This reverts commit a0d5e5cd452a7b1f671085365655017892e01761.
+
+commit a0d5e5cd452a7b1f671085365655017892e01761
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:36:13 2021 +0530
+
+    latest index file
+
+commit 32453b95533f7516686df10a8824fdd193aa11c8
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:30:04 2021 +0530
+
+    modified index
+
+commit c684778840d2d8e8a6146c483e20c307a465cc99
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:12:08 2021 +0530
+
+    added index.html
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git revert 5a015ef2e98b2e7dd095d605e50c1216fd05cef3
+[master ede9579] Revert "final index file"
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+HP@LAPTOP-80894FQP MINGW64 ~/project_dir (master)
+$ git log
+commit ede9579f955eef767b3a930ca9cca1f4f5787e0b (HEAD -> master)
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:46:37 2021 +0530
+
+    Revert "final index file"
+
+    This reverts commit 5a015ef2e98b2e7dd095d605e50c1216fd05cef3.
+
+commit 5a015ef2e98b2e7dd095d605e50c1216fd05cef3
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:46:02 2021 +0530
+
+    final index file
+
+commit c12599dfc76882fc271d849eb2da030d4706c819
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:41:48 2021 +0530
+
+    Revert "current index file"
+
+    This reverts commit cf3033cc53800fe3efce20b693a283cfe2d83736.
+
+commit cf3033cc53800fe3efce20b693a283cfe2d83736
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:40:59 2021 +0530
+
+    current index file
+
+commit 8ac720d248e3db30f91932ad2727430fa11ac676
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:37:18 2021 +0530
+
+    Revert "latest index file"
+
+    This reverts commit a0d5e5cd452a7b1f671085365655017892e01761.
+
+commit a0d5e5cd452a7b1f671085365655017892e01761
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:36:13 2021 +0530
+
+    latest index file
+
+commit 32453b95533f7516686df10a8824fdd193aa11c8
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:30:04 2021 +0530
+
+    modified index
+
+commit c684778840d2d8e8a6146c483e20c307a465cc99
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 12:12:08 2021 +0530
+
+    added index.html
+
+
+
+SECTION 1
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+HP@LAPTOP-80894FQP MINGW64 ~
+$ mkdir Assignments
+
+HP@LAPTOP-80894FQP MINGW64 ~
+$ cd Assignments
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments
+$ git init
+Initialized empty Git repository in C:/Users/HP/Assignments/.git/
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ touch README.txt
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ vi README.txt
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git add README.txt
+warning: LF will be replaced by CRLF in README.txt.
+The file will have its original line endings in your working directory
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git commit -m "readme text file"
+[master (root-commit) f84ed0a] readme text file
+ 1 file changed, 1 insertion(+)
+ create mode 100644 README.txt
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git branch html-assignments
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git checkout html-assignments
+Switched to branch 'html-assignments'
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (html-assignments)
+$ git status
+On branch html-assignments
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        html1.html
+        program2.html
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (html-assignments)
+$ git add *.html
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (html-assignments)
+$ git status
+On branch html-assignments
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   html1.html
+        new file:   program2.html
+
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (html-assignments)
+$ git commit -m "added all html files"
+[html-assignments eda08ea] added all html files
+ 2 files changed, 12 insertions(+)
+ create mode 100644 html1.html
+ create mode 100644 program2.html
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (html-assignments)
+$ git status
+On branch html-assignments
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   html1.html
+        modified:   program2.html
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (html-assignments)
+$ git commit -m "modified files"
+On branch html-assignments
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   html1.html
+        modified:   program2.html
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (html-assignments)
+$ git add *.html
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (html-assignments)
+$ git commit -m "modified files"
+[html-assignments 484f247] modified files
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (html-assignments)
+$ git status
+On branch html-assignments
+nothing to commit, working tree clean
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (html-assignments)
+$ git checkout master
+Switched to branch 'master'
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ vi README.txt
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   README.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git add README.txt
+The file will have its original line endings in your working directory
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git commit -m "modified text file"
+[master c4b7f70] modified text file
+ 1 file changed, 1 insertion(+)
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git checkout html-assignments
+Switched to branch 'html-assignments'
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (html-assignments)
+$ git status
+On branch html-assignments
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   html1.html
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (html-assignments)
+$ git add *.html
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (html-assignments)
+$ git commit -m "modified html1 file"
+[html-assignments 856159f] modified html1 file
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (html-assignments)
+$ git checkout master
+Switched to branch 'master'
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git merge html-assignments
+Merge made by the 'recursive' strategy.
+ html1.html    | 6 ++++++
+ program2.html | 6 ++++++
+ 2 files changed, 12 insertions(+)
+ create mode 100644 html1.html
+ create mode 100644 program2.html
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git log
+commit 86de2042977f60be4c1cf063ee1f34d65a4c7348 (HEAD -> master)
+Merge: c4b7f70 856159f
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 19:18:18 2021 +0530
+
+    Merge branch 'html-assignments'
+
+commit 856159f32d3c63dde6c22b0a75bcca4148208061 (html-assignments)
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 19:17:31 2021 +0530
+
+    modified html1 file
+
+commit c4b7f7008834e05c2cd6f411d382197462194598
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 19:16:14 2021 +0530
+
+    modified text file
+
+commit 484f24751ecc20b248f32250581a4b23d55602f6
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 19:13:55 2021 +0530
+
+    modified files
+
+commit eda08ea1b29ffeb02ec0b0dbce642d250e6bef6c
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 19:11:08 2021 +0530
+
+    added all html files
+
+commit f84ed0ac0e55f6956a9c248030a9a8ae0d93cf2e
+Author: prathibhakasarapu <prathibhakasarapu@gmail.com>
+Date:   Fri Jul 30 19:00:24 2021 +0530
+
+    readme text file
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git branch -d html-assignments
+Deleted branch html-assignments (was 856159f).
+
+SECTION 2
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git branch css-assignments
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git checkout css-assignments
+Switched to branch 'css-assignments'
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (css-assignments)
+$ touch file1.css
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (css-assignments)
+$ git status
+On branch css-assignments
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        filecss1.css
+        filecss2.css
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (css-assignments)
+$ git add *.css
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (css-assignments)
+$ git commit -m "added all css files"
+[css-assignments 6d9981d] added all css files
+ 2 files changed, 20 insertions(+)
+ create mode 100644 filecss1.css
+ create mode 100644 filecss2.css
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (css-assignments)
+$ vi README.txt
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (css-assignments)
+$ git add README.txt
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (css-assignments)
+$ git commit -m "modified readme css"
+[css-assignments 3752464] modified readme css
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (css-assignments)
+$ git checkout master
+Switched to branch 'master'
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git merge css-assignments
+Auto-merging README.txt
+CONFLICT (content): Merge conflict in README.txt
+Automatic merge failed; fix conflicts and then commit the result.
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master|MERGING)
+$ git add README.txt
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master|MERGING)
+$ git commit -m "modified readme in mas"
+[master b9445d3] modified readme in mas
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git merge css-assignments
+Already up to date.
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git branch -d css-assignments
+Deleted branch css-assignments (was 3752464).
+
+SECTION 3
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git branch js-assignments
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git checkout js-assignments
+Switched to branch 'js-assignments'
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (js-assignments)
+$ git status
+On branch js-assignments
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        jsfile1.js
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (js-assignments)
+$ git add *.js
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (js-assignments)
+$ git commit -m "added js files"
+[js-assignments dfbceb2] added js files
+ 1 file changed, 3 insertions(+)
+ create mode 100644 jsfile1.js
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (js-assignments)
+$ git status
+On branch js-assignments
+nothing to commit, working tree clean
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (js-assignments)
+$ git status
+On branch js-assignments
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   README.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (js-assignments)
+$ git add README.txt
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (js-assignments)
+$ git commit -m "added changes"
+[js-assignments faf60f2] added changes
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (js-assignments)
+$ git checkout master
+Switched to branch 'master'
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git status
+On branch master
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   README.txt
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git add README.txt
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git commit -m "added changes in master"
+[master c84d5c0] added changes in master
+ 1 file changed, 1 insertion(+)
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git checkout js-assignments
+Switched to branch 'js-assignments'
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (js-assignments)
+$ git status
+On branch js-assignments
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   jsfile1.js
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (js-assignments)
+$ git add *.js
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (js-assignments)
+$ git commit -m "changes made in js in js"
+[js-assignments c8a1609] changes made in js in js
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (js-assignments)
+$ git checkout master
+Switched to branch 'master'
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git merge js-assignments
+Auto-merging README.txt
+CONFLICT (content): Merge conflict in README.txt
+Automatic merge failed; fix conflicts and then commit the result.
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master|MERGING)
+$ git status
+On branch master
+You have unmerged paths.
+  (fix conflicts and run "git commit")
+  (use "git merge --abort" to abort the merge)
+
+Changes to be committed:
+        new file:   jsfile1.js
+
+Unmerged paths:
+  (use "git add <file>..." to mark resolution)
+        both modified:   README.txt
+
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master|MERGING)
+$ git add README.txt
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master|MERGING)
+$ git commit -m "changes"
+[master 2f68ee9] changes
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git merge js-assignments
+Already up to date.
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git branch -d js-assignments
+Deleted branch js-assignments (was c8a1609).
+
+SECTION 3: GIT REMOTING
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git remote add origin https://github.com/prathibhakasarapu/freshersbatch-oct16.git
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git remote -v
+origin  https://github.com/prathibhakasarapu/freshersbatch-oct16.git (fetch)
+origin  https://github.com/prathibhakasarapu/freshersbatch-oct16.git (push)
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git add .
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git commit -m "first commit"
+On branch master
+nothing to commit, working tree clean
+
+HP@LAPTOP-80894FQP MINGW64 ~/Assignments (master)
+$ git push origin master
+Enumerating objects: 47, done.
+Counting objects: 100% (47/47), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (38/38), done.
+Writing objects: 100% (47/47), 4.16 KiB | 387.00 KiB/s, done.
+Total 47 (delta 16), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (16/16), done.
+To https://github.com/prathibhakasarapu/freshersbatch-oct16.git
+ * [new branch]      master -> master
+
+
+
