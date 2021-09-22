@@ -1,0 +1,2540 @@
+SPRING.XML FILE
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+   <bean id = "triangle" class= "com.helloworldexample.Triangle" >
+   <property name="pointA" ref="zeroPoint"/>
+   <property name="pointB" ref="onePoint"/>
+   <property name="pointC" ref="twoPoint"/>
+   </bean>
+   <bean id="zeroPoint" class="com.helloworldexample.Point">
+   <property name="x" value="0"/>
+   <property name="y" value="0"/>
+   </bean>
+   
+   <bean id="onePoint" class="com.helloworldexample.Point">
+   <property name="x" value="-20"/>
+   <property name="y" value="0"/>
+   </bean>
+   
+   <bean id="twoPoint" class="com.helloworldexample.Point">
+   <property name="x" value="20"/>
+   <property name="y" value="0"/>
+   </bean>
+
+</beans>
+
+TRIANGLE.JAVA FILE::
+
+package com.helloworldexample;
+
+public class Triangle {
+	
+	private Point pointA;
+	private Point pointB;
+	private Point pointC;
+	
+
+	public Point getPointA() {
+		return pointA;
+	}
+
+
+
+	public void setPointA(Point pointA) {
+		this.pointA = pointA;
+	}
+
+
+
+	public Point getPointB() {
+		return pointB;
+	}
+
+
+
+	public void setPointB(Point pointB) {
+		this.pointB = pointB;
+	}
+
+
+
+	public Point getPointC() {
+		return pointC;
+	}
+
+
+
+	public void setPointC(Point pointC) {
+		this.pointC = pointC;
+	}
+
+
+
+	public void draw() {
+		System.out.println("point A =(" +getPointA().getX() +","+getPointA().getY() +")");
+		System.out.println("point B =(" +getPointB().getX() +","+getPointB().getY() +")");
+		System.out.println("point C =(" +getPointC().getX() +","+getPointC().getY() +")");
+	}
+
+}
+
+
+POINT.JAVA FILE::
+
+package com.helloworldexample;
+
+public class Point {
+	private int x;
+	private int y;
+	public int getX() {
+		return x;
+	}
+	public void setX(int x) {
+		this.x = x;
+	}
+	public int getY() {
+		return y;
+	}
+	public void setY(int y) {
+		this.y = y;
+	}
+	
+	
+	
+
+}
+
+DRAWINGAPP.JAVA FILE(MAIN METHOD WALA FILE)::
+
+package com.helloworldexample;
+
+/*import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.FileSystemResource;
+
+public class DrawingApp {
+
+	public static void main(String[] args) {
+		//Triangle triangle=new Triangle();
+		
+		//BeanFactory factory= new XmlBeanFactory(new FileSystemResource("spring.xml"));
+		ApplicationContext context=new ClassPathXmlApplicationContext("spring.xml");
+		Triangle triangle=(Triangle)context.getBean("triangle"); 
+		triangle.draw();
+
+	}
+
+}*/
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.FileSystemResource;
+
+public class DrawingApp {
+
+	public static void main(String[] args) {
+		
+		//Triangle t=new Triangle();
+		//BeanFactory factory=new XmlBeanFactory(new FileSystemResource("spring.xml"));
+		ApplicationContext context=new ClassPathXmlApplicationContext("spring.xml");
+		Triangle triangle=(Triangle)context.getBean("triangle"); 
+		triangle.draw();
+	}
+
+}
+
+OUTPUT::
+
+
+point A =(0,0)
+point B =(-20,0)
+point C =(20,0)
+
+SPRING.XML FILE FOR INNER BEANS FOR ABOVE PROGRAM::
+
+->NO NEED TO GIVE ID FOR INNER BEANS AND THEY ARE KEPT IN PROPERTY
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+
+   <bean id = "triangle" class= "com.helloworldexample.Triangle" >
+   <property name="pointA" ref="zeroPoint"/>
+   
+   <property name="pointB">
+   <bean class="com.helloworldexample.Point">
+   <property name="x" value="-20"/>
+   <property name="y" value="0"/>
+   </bean>
+   </property>
+   
+   <property name="pointC">
+   <bean class="com.helloworldexample.Point">
+   <property name="x" value="20"/>
+   <property name="y" value="0"/>
+   </bean>
+   </property>
+   
+   </bean>
+   
+   <bean id="zeroPoint" class="com.helloworldexample.Point">
+   <property name="x" value="0"/>
+   <property name="y" value="0"/>
+   </bean>
+   
+</beans>
+
+ALIAS TAG::
+
+ <alias name="triangle" alias="triangle.alias"/>
+->we can give it in bean defination itself:<bean id = "triangle" class= "com.helloworldexample.Triangle" name="triangle.name">
+
+idref::by using this we can restrict it to only the ids
+
+AUTOWIRING:::
+
+spring.xml file for triangle:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+ 
+ <beans>
+
+   <bean id = "triangle" class= "com.helloworldexample.Triangle" autowire="byName" >
+   
+   </bean>
+   
+   <bean id="pointA" class="com.helloworldexample.Point">
+   <property name="x" value="0"/>
+   <property name="y" value="0"/>
+   </bean>
+   
+   <bean id="pointB" class="com.helloworldexample.Point">
+   <property name="x" value="-20"/>
+   <property name="y" value="0"/>
+   </bean>
+   
+   <bean id="pointC" class="com.helloworldexample.Point">
+   <property name="x" value="20"/>
+   <property name="y" value="0"/>
+   </bean>
+
+</beans>
+
+BEAN DEFINATION INHERITANCE::
+
+DRAWING.JAVA FILE:
+
+package com.helloworldexample;
+
+/*import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.FileSystemResource;
+
+public class DrawingApp {
+
+	public static void main(String[] args) {
+		//Triangle triangle=new Triangle();
+		
+		//BeanFactory factory= new XmlBeanFactory(new FileSystemResource("spring.xml"));
+		ApplicationContext context=new ClassPathXmlApplicationContext("spring.xml");
+		Triangle triangle=(Triangle)context.getBean("triangle"); 
+		triangle.draw();
+
+	}
+
+}*/
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.FileSystemResource;
+
+public class DrawingApp {
+
+	public static void main(String[] args) {
+		
+		//Triangle t=new Triangle();
+		//BeanFactory factory=new XmlBeanFactory(new FileSystemResource("spring.xml"));
+		ApplicationContext context=new ClassPathXmlApplicationContext("spring.xml");
+		Triangle triangle=(Triangle)context.getBean("triangle1"); 
+		triangle.draw();
+	}
+
+}
+
+SPRING.XML FILE::
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+ 
+ <beans>
+ 
+ <bean id="parenttriangle " class= "com.helloworldexample.Triangle">
+ <property name="pointA" ref="pointA"/>
+ </bean>
+
+   <bean id = "triangle1" class= "com.helloworldexample.Triangle" parent="parenttriangle" >
+   <property name="pointB" ref="pointB"/>
+   <property name="pointC" ref="pointC"/>
+   </bean>
+  
+ <bean id="triangle2" class= "com.helloworldexample.Triangle" parent="parenttriangle">
+<property name="pointB" ref="pointB"/>
+ </bean>
+   
+   <bean id="pointA" class="com.helloworldexample.Point">
+   <property name="x" value="0"/>
+   <property name="y" value="0"/>
+   </bean>
+   
+   <bean id="pointB" class="com.helloworldexample.Point">
+   <property name="x" value="-20"/>
+   <property name="y" value="0"/>
+   </bean>
+   
+   <bean id="pointC" class="com.helloworldexample.Point">
+   <property name="x" value="20"/>
+   <property name="y" value="0"/>
+   </bean>
+
+</beans>
+ 
+->THE ABOVE EXAMPLE IS SAME FOR TRIANGLE AND POINT
+
+OUTPUT::point A =(0,0)
+point B =(-20,0)
+point C =(20,0)
+
+->for lists::: inheritance
+
+<beans>
+ 
+ <bean id="parenttriangle " class= "com.helloworldexample.Triangle">
+ <property name="points" >
+ <list>
+ <ref bean="pointA"></ref>
+ </list>
+ </property>
+ </bean>
+
+   <bean id = "triangle1" class= "com.helloworldexample.Triangle" parent="parenttriangle" >
+  <property name="points" >
+ <list merge="points">
+ <ref bean="pointB"></ref>
+ </list>
+ </property>
+   </bean>
+  
+ <bean id="triangle2" class= "com.helloworldexample.Triangle" parent="parenttriangle">
+<property name="pointB" ref="pointB"/>
+ </bean>
+   
+   <bean id="pointA" class="com.helloworldexample.Point">
+   <property name="x" value="0"/>
+   <property name="y" value="0"/>
+   </bean>
+   
+   <bean id="pointB" class="com.helloworldexample.Point">
+   <property name="x" value="-20"/>
+   <property name="y" value="0"/>
+   </bean>
+   
+   <bean id="pointC" class="com.helloworldexample.Point">
+   <property name="x" value="20"/>
+   <property name="y" value="0"/>
+   </bean>
+
+</beans>
+
+
+
+FOR INITIALIZIND CALL BACK METHOD FOR A BEAN :
+
+DRAWING.JAVA FILE
+
+package com.helloworldexample;
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.FileSystemResource;
+
+public class DrawingApp {
+
+	public static void main(String[] args) {
+		
+		//Triangle t=new Triangle();
+		//BeanFactory factory=new XmlBeanFactory(new FileSystemResource("spring.xml"));
+		AbstractApplicationContext context=new ClassPathXmlApplicationContext("spring.xml");
+		context.registerShutdownHook();
+		Triangle triangle=(Triangle)context.getBean("triangle"); 
+		triangle.draw();
+	}
+
+}
+
+TRIANGLE.JAVA FILE
+
+package com.helloworldexample;
+
+import java.util.List;
+
+import org.springframework.beans.factory.InitializingBean;
+
+public class Triangle implements InitializingBean{
+	private Point pointA;
+	private Point pointB;
+	private Point pointC;
+	
+
+	public Point getPointA() {
+		return pointA;
+	}
+
+
+
+	public void setPointA(Point pointA) {
+		this.pointA = pointA;
+	}
+
+
+
+	public Point getPointB() {
+		return pointB;
+	}
+
+
+
+	public void setPointB(Point pointB) {
+		this.pointB = pointB;
+	}
+
+
+
+	public Point getPointC() {
+		return pointC;
+	}
+
+
+
+	public void setPointC(Point pointC) {
+		this.pointC = pointC;
+	}
+
+
+
+	public void draw() {
+		System.out.println("point A =(" +getPointA().getX() +","+getPointA().getY() +")");
+		System.out.println("point B =(" +getPointB().getX() +","+getPointB().getY() +")");
+		System.out.println("point C =(" +getPointC().getX() +","+getPointC().getY() +")");
+	}
+
+
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		System.out.println("Initializing Beans init method called for Triangle");
+		
+	}
+
+}
+
+
+SPRING.XML AND point.java IS SAME AS THE FIRST PROGRAM WE DID WITH REF
+
+OUTPUT:
+
+Initializing Beans init method called for Triangle
+point A =(0,0)
+point B =(-20,0)
+point C =(20,0)
+
+
+DisposableBean METHOD::
+
+package com.helloworldexample;
+
+import java.util.List;
+
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+
+public class Triangle implements InitializingBean,DisposableBean{
+	private Point pointA;
+	private Point pointB;
+	private Point pointC;
+	
+
+	public Point getPointA() {
+		return pointA;
+	}
+
+
+
+	public void setPointA(Point pointA) {
+		this.pointA = pointA;
+	}
+
+
+
+	public Point getPointB() {
+		return pointB;
+	}
+
+
+
+	public void setPointB(Point pointB) {
+		this.pointB = pointB;
+	}
+
+
+
+	public Point getPointC() {
+		return pointC;
+	}
+
+
+
+	public void setPointC(Point pointC) {
+		this.pointC = pointC;
+	}
+
+
+
+	public void draw() {
+		System.out.println("point A =(" +getPointA().getX() +","+getPointA().getY() +")");
+		System.out.println("point B =(" +getPointB().getX() +","+getPointB().getY() +")");
+		System.out.println("point C =(" +getPointC().getX() +","+getPointC().getY() +")");
+	}
+
+
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		System.out.println("Initializing Beans init method called for Triangle");
+		
+	}
+
+
+
+	@Override
+	public void destroy() throws Exception {
+		System.out.println("DesposableBean destroy init method called for Triangle");
+		
+	}
+
+}
+
+OUTPUT::
+Initializing Beans init method called for Triangle
+point A =(0,0)
+point B =(-20,0)
+point C =(20,0)
+Aug 16, 2021 2:36:47 PM org.springframework.context.support.AbstractApplicationContext doClose
+INFO: Closing org.springframework.context.support.ClassPathXmlApplicationContext@5e91993f: startup date [Mon Aug 16 14:36:46 IST 2021]; root of context hierarchy
+DesposableBean destroy init method called for Triangle
+
+by init method() for initializing
+
+SPRING.XML:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+ 
+ <beans>
+
+   <bean id = "triangle" class= "com.helloworldexample.Triangle" init-method="myInit" destroy-method="cleanUp">
+   <property name="pointA" ref="zeroPoint"/>
+   <property name="pointB" ref="onePoint"/>
+   <property name="pointC" ref="twoPoint"/>
+   </bean>
+   <bean id="zeroPoint" class="com.helloworldexample.Point">
+   <property name="x" value="0"/>
+   <property name="y" value="0"/>
+   </bean>
+   
+   <bean id="onePoint" class="com.helloworldexample.Point">
+   <property name="x" value="-20"/>
+   <property name="y" value="0"/>
+   </bean>
+   
+   <bean id="twoPoint" class="com.helloworldexample.Point">
+   <property name="x" value="20"/>
+   <property name="y" value="0"/>
+   </bean>
+
+</beans>
+
+TRIANGLE.JAVA FILE: THE DRAWING.JAVA FILE IS SAME AS DISOPSABLE AND INITIALIZATION CALLBACK METHOD
+
+package com.helloworldexample;
+
+import java.util.List;
+
+
+public class Triangle {
+	private Point pointA;
+	private Point pointB;
+	private Point pointC;
+	
+
+	public Point getPointA() {
+		return pointA;
+	}
+
+
+
+	public void setPointA(Point pointA) {
+		this.pointA = pointA;
+	}
+
+
+
+	public Point getPointB() {
+		return pointB;
+	}
+
+
+
+	public void setPointB(Point pointB) {
+		this.pointB = pointB;
+	}
+
+
+
+	public Point getPointC() {
+		return pointC;
+	}
+
+
+
+	public void setPointC(Point pointC) {
+		this.pointC = pointC;
+	}
+
+
+
+	public void draw() {
+		System.out.println("point A =(" +getPointA().getX() +","+getPointA().getY() +")");
+		System.out.println("point B =(" +getPointB().getX() +","+getPointB().getY() +")");
+		System.out.println("point C =(" +getPointC().getX() +","+getPointC().getY() +")");
+	}
+
+ public void myInit() {
+	 System.out.println("my init method called for triangle");
+ }
+ public void cleanUp() {
+	 System.out.println("my cleanUp method called for triangle");
+ }
+
+}
+
+OUTPUT:
+my init method called for triangle
+point A =(0,0)
+point B =(-20,0)
+point C =(20,0)
+my cleanUp method called for triangle
+
+BEAN POSTPROCESSOR::
+
+spring.xml file::
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+ 
+ <beans>
+
+   <bean id = "triangle" class= "com.helloworldexample.Triangle" init-method="myInit" destroy-method="cleanUp">
+   <property name="pointA" ref="zeroPoint"/>
+   <property name="pointB" ref="onePoint"/>
+   <property name="pointC" ref="twoPoint"/>
+   </bean>
+   <bean id="zeroPoint" class="com.helloworldexample.Point">
+   <property name="x" value="0"/>
+   <property name="y" value="0"/>
+   </bean>
+   
+   <bean id="onePoint" class="com.helloworldexample.Point">
+   <property name="x" value="-20"/>
+   <property name="y" value="0"/>
+   </bean>
+   
+   <bean id="twoPoint" class="com.helloworldexample.Point">
+   <property name="x" value="20"/>
+   <property name="y" value="0"/>
+   </bean>
+   
+   <bean class="com.helloworldexample.DisplayNameBeanPostProcessor"/>
+
+</beans>
+
+
+BEANPOSTPROCESSOR .JAVA FILE::
+
+package com.helloworldexample;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
+
+public class DisplayNameBeanPostProcessor implements BeanPostProcessor {
+
+	@Override
+	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+		// TODO Auto-generated method stub
+		System.out.println("In After Initialization method.Bean name is" +beanName);
+		return bean;
+	}
+
+	@Override
+	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+		// TODO Auto-generated method stub
+		System.out.println("In Before Initialization method.Bean name is" +beanName);
+		return bean;
+	}
+
+
+}
+
+DRAWING.JAVA FILE::
+
+package com.helloworldexample;
+
+/*import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.FileSystemResource;
+
+public class DrawingApp {
+
+	public static void main(String[] args) {
+		//Triangle triangle=new Triangle();
+		
+		//BeanFactory factory= new XmlBeanFactory(new FileSystemResource("spring.xml"));
+		ApplicationContext context=new ClassPathXmlApplicationContext("spring.xml");
+		Triangle triangle=(Triangle)context.getBean("triangle"); 
+		triangle.draw();
+
+	}
+
+}*/
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.FileSystemResource;
+
+public class DrawingApp {
+
+	public static void main(String[] args) {
+		
+		//Triangle t=new Triangle();
+		//BeanFactory factory=new XmlBeanFactory(new FileSystemResource("spring.xml"));
+		AbstractApplicationContext context=new ClassPathXmlApplicationContext("spring.xml");
+		context.registerShutdownHook();
+		Triangle triangle=(Triangle)context.getBean("triangle"); 
+		triangle.draw();
+	}
+
+}
+
+OUTPUT::
+
+In Before Initialization method.Bean name iszeroPoint
+In After Initialization method.Bean name iszeroPoint
+In Before Initialization method.Bean name isonePoint
+In After Initialization method.Bean name isonePoint
+In Before Initialization method.Bean name istwoPoint
+In After Initialization method.Bean name istwoPoint
+In Before Initialization method.Bean name istriangle
+my init method called for triangle
+In After Initialization method.Bean name istriangle
+point A =(0,0)
+point B =(-20,0)
+point C =(20,0)
+my cleanUp method called for triangle
+
+
+-BEANFACTORYPOSTPROCESSOR::
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+ 
+ <beans>
+
+   <bean id = "triangle" class= "com.helloworldexample.Triangle" init-method="myInit" destroy-method="cleanUp">
+   <property name="pointA" ref="zeroPoint"/>
+   <property name="pointB" ref="onePoint"/>
+   <property name="pointC" ref="twoPoint"/>
+   </bean>
+   <bean id="zeroPoint" class="com.helloworldexample.Point">
+   <property name="x" value="0"/>
+   <property name="y" value="0"/>
+   </bean>
+   
+   <bean id="onePoint" class="com.helloworldexample.Point">
+   <property name="x" value="-20"/>
+   <property name="y" value="0"/>
+   </bean>
+   
+   <bean id="twoPoint" class="com.helloworldexample.Point">
+   <property name="x" value="20"/>
+   <property name="y" value="0"/>
+   </bean>
+   
+   <bean class="com.helloworldexample.MyBeanFactoryPP"/>
+
+</beans>
+
+
+package com.helloworldexample;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+
+public class MyBeanFactoryPP implements BeanFactoryPostProcessor{
+
+	@Override
+	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+			System.out.println("My Bean Factory post processor is called");	
+	}
+	
+
+}
+
+
+OUTPUT::
+My Bean Factory post processor is called
+Aug 16, 2021 5:19:21 PM org.springframework.beans.factory.support.DefaultListableBeanFactory preInstantiateSingletons
+INFO: Pre-instantiating singletons in org.springframework.beans.factory.support.DefaultListableBeanFactory@63e2203c: defining beans [triangle,zeroPoint,onePoint,twoPoint,com.helloworldexample.MyBeanFactoryPP#0]; root of factory hierarchy
+my init method called for triangle
+point A =(0,0)
+point B =(-20,0)
+point C =(20,0)
+my cleanUp method called for triangle
+
+example::
+
+
+package com.helloworldexample;
+
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+
+public class MyBeanFactoryPP implements BeanFactoryPostProcessor{
+
+	@Override
+	public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+			System.out.println("My Bean Factory post processor is called");	
+	}
+	
+
+}
+
+pointA.pointX=0
+pointA.pointY=0
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+ 
+ <beans>
+
+   <bean id = "triangle" class= "com.helloworldexample.Triangle" init-method="myInit" destroy-method="cleanUp">
+   <property name="pointA" ref="pointA"/>
+   <property name="pointB" ref="pointB"/>
+   <property name="pointC" ref="pointC"/>
+   </bean>
+   <bean id="pointA" class="com.helloworldexample.Point">
+   <property name="x" value="${pointA.pointX}"/>
+   <property name="y" value="${pointA.pointY}"/>
+   </bean>
+   
+   <bean id="pointB" class="com.helloworldexample.Point">
+   <property name="x" value="-20"/>
+   <property name="y" value="0"/>
+   </bean>
+   
+   <bean id="pointC" class="com.helloworldexample.Point">
+   <property name="x" value="20"/>
+   <property name="y" value="0"/>
+   </bean>
+   
+  
+ <bean class="com.helloworldexample.beans.factory.config.PropertyPlaceholderConfigurer">
+  <property name="locations" value="pointsconfig.properties"/>
+  </bean>
+</beans>
+
+
+coding in interfaces::
+
+inteface.java file:
+
+package com.helloworldexample;
+
+public interface Shape {
+	
+	public void draw();
+
+}
+
+
+circle.java file::
+
+package com.helloworldexample;
+
+public class Circle implements Shape {
+	
+	private Point center;
+
+	@Override
+	public void draw() {
+		System.out.println("drawing circle");
+		System.out.println("Circle point is: (" +center.getX()+"," +center.getY()+ ")");
+	
+	}
+
+	public Point getCenter() {
+		return center;
+	}
+
+	public void setCenter(Point center) {
+		this.center = center;
+	}
+	
+	
+
+}
+
+triangle.java file::
+
+package com.helloworldexample;
+
+import java.util.List;
+
+
+public class Triangle implements Shape {
+	private Point pointA;
+	private Point pointB;
+	private Point pointC;
+	
+
+	public Point getPointA() {
+		return pointA;
+	}
+
+
+
+	public void setPointA(Point pointA) {
+		this.pointA = pointA;
+	}
+
+
+
+	public Point getPointB() {
+		return pointB;
+	}
+
+
+
+	public void setPointB(Point pointB) {
+		this.pointB = pointB;
+	}
+
+
+
+	public Point getPointC() {
+		return pointC;
+	}
+
+
+
+	public void setPointC(Point pointC) {
+		this.pointC = pointC;
+	}
+
+	public void draw() {
+		
+		System.out.println("drawing tiangle");
+		System.out.println("point A =(" +getPointA().getX() +","+getPointA().getY() +")");
+		System.out.println("point B =(" +getPointB().getX() +","+getPointB().getY() +")");
+		System.out.println("point C =(" +getPointC().getX() +","+getPointC().getY() +")");
+		
+	}
+ 
+
+}
+
+drawing.java file::
+
+package com.helloworldexample;
+
+
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.io.FileSystemResource;
+
+public class DrawingApp {
+
+	public static void main(String[] args) {
+		
+		//Triangle t=new Triangle();
+		//BeanFactory factory=new XmlBeanFactory(new FileSystemResource("spring.xml"));
+		ApplicationContext context=new ClassPathXmlApplicationContext("spring.xml");
+		Shape shape=(Shape)context.getBean("triangle"); //circle for circle
+		shape.draw();
+	}
+
+}
+
+OUTPUT::
+drawing tiangle
+point A =(0,0)
+point B =(-20,0)
+point C =(20,0)
+
+SPRING MVC::
+CONTROLLER::
+HelloController.java file::
+
+package com.hellocontroller;
+
+import javax.servlet.http.HttpServletRequest;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.AbstractController;
+
+public class HelloController extends AbstractController {
+
+	@Override
+	protected ModelAndView handleRequestInternal(HttpServletRequest arg0, HttpServletResponse arg1) throws Exception {
+		ModelAndView modelandview = new ModelAndView("HelloPage");
+		modelandview.addObject("welcomeMessage","Hi User, welocme to the first Spring MVC application");
+		
+		return modelandview;
+	}
+
+}
+
+VIEW::
+HelloPage.jsp::
+
+<html>
+	<body>
+		<h1>First Spring MVC Application Demo</h1>
+		<h2>${welcomeMessage}</h2>	
+	</body>
+</html>
+
+DISPATCHER SERVLET::
+web.xml file::
+
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://Java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>FirstSpringMVCProject</display-name>
+  
+  <servlet>
+	<servlet-name>spring-dispatcher</servlet-name>
+	<servlet-class>org.springframework.web.servlet.DispatcherServlet
+	</servlet-class>
+	<load-on-startup>1</load-on-startup>
+</servlet>
+
+<servlet-mapping>
+	<servlet-name>spring-dispatcher</servlet-name>
+	<url-pattern>/</url-pattern>
+</servlet-mapping>
+
+</web-app>
+
+spring-dispatcher-servlet.xml::
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns = "http://www.springframework.org/schema/beans"
+   xmlns:context = "http://www.springframework.org/schema/context"
+   xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation = "http://www.springframework.org/schema/beans     
+   http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">  
+   
+   <!-- http://www.springframework.org/schema/context 
+   http://www.springframework.org/schema/context/spring-context-5.3.8.xsd -->
+   
+   <bean id="HandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping" />
+   
+   <bean name="/welcome.html" class="com.hellocontroller.HelloController" />
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name = "prefix">
+			<value>/WEB-INF/</value>
+		</property>
+	      <property name = "suffix">
+	      	<value>.jsp</value>
+	      </property>
+	</bean> 
+</beans>
+
+output::
+http://localhost:9010/FirstSpringMVCProject/welcome.html
+
+USING ANNOTATIONS::
+
+package com.hellocontroller;
+
+import javax.servlet.http.HttpServletRequest;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.AbstractController;
+
+@Controller
+public class HelloController {
+
+	@RequestMapping("/welcome")
+	public ModelAndView helloworld() {
+		ModelAndView model = new ModelAndView("HelloPage");
+		model.addObject("welcomeMessage","Hi User, welocme to the first Spring MVC application");
+		
+		return model;
+	}
+
+}
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns = "http://www.springframework.org/schema/beans"
+   xmlns:context = "http://www.springframework.org/schema/context"
+   xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:mvc="http://www.springframework.org/schema/mvc"
+   xsi:schemaLocation = "http://www.springframework.org/schema/beans     
+   http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+   http://www.springframework.org/schema/context
+   http://www.springframework.org/schema/context/spring-context.xsd
+   http://www.springframework.org/schema/mvc
+   http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+   
+   <!-- http://www.springframework.org/schema/context 
+   http://www.springframework.org/schema/context/spring-context-5.3.8.xsd -->
+   
+   
+   <context:component-scan base-package="com.hellocontroller" ></context:component-scan>
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name = "prefix">
+			<value>/WEB-INF/</value>
+		</property>
+	      <property name = "suffix">
+	      	<value>.jsp</value>
+	      </property>
+	</bean> 
+</beans>
+
+output is same as before example
+
+->
+
+package com.hellocontroller;
+
+import javax.servlet.http.HttpServletRequest;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.AbstractController;
+
+@Controller
+@RequestMapping("/greet")
+public class HelloController {
+
+	@RequestMapping("/welcome")
+	public ModelAndView helloworld() {
+		ModelAndView model = new ModelAndView("HelloPage");
+		model.addObject("welcomeMessage","Hi User, welocme to the first Spring MVC application");
+		
+		return model;
+	}
+
+}
+
+
+output:
+http://localhost:9010/FirstSpringMVCProject/greet/welcome
+
+->
+
+package com.hellocontroller;
+
+import javax.servlet.http.HttpServletRequest;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.AbstractController;
+
+@Controller
+public class HelloController {
+
+	@RequestMapping("/welcome/{hello}")
+	public ModelAndView helloworld() {
+		ModelAndView model = new ModelAndView("HelloPage");
+		model.addObject("welcomeMessage","Hi User, welocme to the first Spring MVC application");
+		
+		return model;
+	}
+
+}
+
+
+output:
+http://localhost:9010/FirstSpringMVCProject/welcome/ram
+
+->
+
+package com.hellocontroller;
+
+import javax.servlet.http.HttpServletRequest;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.AbstractController;
+
+@Controller
+public class HelloController {
+
+	@RequestMapping("/welcome/{userName}")
+	public ModelAndView helloworld(@PathVariable("userName") String name) {
+		ModelAndView model = new ModelAndView("HelloPage");
+		model.addObject("welcomeMessage","Hi User " +name);
+		
+		return model;
+	}
+
+}
+
+
+output:
+http://localhost:9010/FirstSpringMVCProject/welcome/ram
+
+First Spring MVC Application Demo
+Hi User ram
+
+->package com.hellocontroller;
+
+import javax.servlet.http.HttpServletRequest;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.AbstractController;
+
+@Controller
+public class HelloController {
+
+	@RequestMapping("/welcome/{country}/{userName}")
+	public ModelAndView helloworld(@PathVariable("userName") String name,@PathVariable("country") String cname) {
+		ModelAndView model = new ModelAndView("HelloPage");
+		model.addObject("welcomeMessage","Hi User " +name+ " from " +cname);
+		
+		return model;
+	}
+
+}
+
+->SAME AS ABOVE PROBLEM BUT WITH MAPPING:::
+
+package com.hellocontroller;
+
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.AbstractController;
+
+@Controller
+public class HelloController {
+
+	@RequestMapping("/welcome/{country}/{userName}")
+	public ModelAndView helloworld(@PathVariable Map<String,String> pathvars) {
+		
+		String name =pathvars.get("userName");
+		String cname=pathvars.get("country");
+		ModelAndView model = new ModelAndView("HelloPage");
+		model.addObject("welcomeMessage","Hi User " +name+ " from " +cname);
+		
+		return model;
+	}
+
+}
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns = "http://www.springframework.org/schema/beans"
+   xmlns:context = "http://www.springframework.org/schema/context"
+   xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:mvc="http://www.springframework.org/schema/mvc"
+   xsi:schemaLocation = "http://www.springframework.org/schema/beans     
+   http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+   http://www.springframework.org/schema/context
+   http://www.springframework.org/schema/context/spring-context.xsd
+   http://www.springframework.org/schema/mvc
+   http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+   
+   <!-- http://www.springframework.org/schema/context 
+   http://www.springframework.org/schema/context/spring-context-5.3.8.xsd -->
+   
+   <context:component-scan base-package="com.hellocontroller" ></context:component-scan>
+
+   <mvc:annotation-driven/>
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name = "prefix">
+			<value>/WEB-INF/</value>
+		</property>
+	      <property name = "suffix">
+	      	<value>.jsp</value>
+	      </property>
+	</bean> 
+</beans>
+
+
+---->@modelAttribute::
+
+student admission controller.java file:
+
+package com.hellocontroller;
+
+import java.util.Map;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+@Controller
+public class StudentAdmissionController {
+	
+	@RequestMapping(value="/admissionForm.html", method = RequestMethod.GET)
+	public ModelAndView getAdmissionForm() {
+		ModelAndView model1= new ModelAndView("AdmissionForm");
+		return model1;
+	}
+	
+	
+	@RequestMapping(value="/submitAdmissionForm.html", method = RequestMethod.POST)
+	public ModelAndView submitAdmissionForm(@ModelAttribute("student1") Student student1) {
+		ModelAndView model = new ModelAndView("AdmissionSuccess");
+		model.addObject("headerMessage","cmr college of engineering and technology");
+		
+		return model;
+	}
+
+}
+
+
+student.java file:
+
+package com.hellocontroller;
+
+public class Student {
+	
+	private String studentName;
+	private String studentHobby;
+	public String getStudentName() {
+		return studentName;
+	}
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
+	}
+	public String getStudentHobby() {
+		return studentHobby;
+	}
+	public void setStudentHobby(String studentHobby) {
+		this.studentHobby = studentHobby;
+	}
+	
+	
+
+}
+
+
+web.xml:same as above::
+
+
+
+spring dispatcher servlet::
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns = "http://www.springframework.org/schema/beans"
+   xmlns:context = "http://www.springframework.org/schema/context"
+   xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+   xmlns:mvc="http://www.springframework.org/schema/mvc"
+   xsi:schemaLocation = "http://www.springframework.org/schema/beans     
+   http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+   http://www.springframework.org/schema/context
+   http://www.springframework.org/schema/context/spring-context.xsd
+   http://www.springframework.org/schema/mvc
+   http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+   
+   <!-- http://www.springframework.org/schema/context 
+   http://www.springframework.org/schema/context/spring-context-5.3.8.xsd -->
+   
+   <context:component-scan base-package="com.hellocontroller" ></context:component-scan>
+
+   <mvc:annotation-driven/>
+
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name = "prefix">
+			<value>/WEB-INF/</value>
+		</property>
+	      <property name = "suffix">
+	      	<value>.jsp</value>
+	      </property>
+	</bean> 
+</beans>
+
+Admission form.jsp file:
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+</head>
+<body>
+    <h1> STUDENT ADMISSION FORM FOR ENGINEERING COURSES</h1>
+    
+    <form action="/FirstSpringMVCProject/submitAdmissionForm.html" method="post">
+      <p>
+           Student's Name : <input type="text" name="studentName"/>
+           </p>
+           <p>
+           Student's Hobby : <input type="text" name="studentHobby"/>
+           </p>
+           <p>
+           submit:<input type="submit" value="submit form"/>
+           
+    
+    </form>
+</body>
+</html>
+
+admission sucsess .jsp file:
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+</head>
+<body>
+<h1>${headerMessage}</h1>
+<h3>Congratulations!! processes your application</h3>
+<h2>Details submitted by you:</h2>
+<table>
+
+<tr>
+ <td>Student Name:</td>
+ <td>${student1.studentName}</td>
+ </tr>
+ 
+ <tr>
+ <td>Student Hobby:</td>
+ <td>${student1.studentHobby}</td>
+ </tr>
+ 
+</table>
+</body>
+</html>
+-----------------------------------------------------
+->student.java file::
+
+package com.hellocontroller;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+public class Student {
+	
+	private String studentName;
+	private String studentHobby;
+	
+	private Long studentMobile;
+	private Date studentDOB;
+	private ArrayList<String> studentSkills;
+	
+	
+	public Long getStudentMobile() {
+		return studentMobile;
+	}
+	public void setStudentMobile(Long studentMobile) {
+		this.studentMobile = studentMobile;
+	}
+	public Date getStudentDOB() {
+		return studentDOB;
+	}
+	public void setStudentDOB(Date studentDOB) {
+		this.studentDOB = studentDOB;
+	}
+	public ArrayList<String> getStudentSkills() {
+		return studentSkills;
+	}
+	public void setStudentSkills(ArrayList<String> studentSkills) {
+		this.studentSkills = studentSkills;
+	}
+	public String getStudentName() {
+		return studentName;
+	}
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
+	}
+	public String getStudentHobby() {
+		return studentHobby;
+	}
+	public void setStudentHobby(String studentHobby) {
+		this.studentHobby = studentHobby;
+	}
+	
+	
+
+}
+
+->Admissionform file:
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+</head>
+<body>
+    <h1> STUDENT ADMISSION FORM FOR ENGINEERING COURSES</h1>
+    
+    <form action="/FirstSpringMVCProject/submitAdmissionForm.html" method="post">
+      <table>
+      <tr>
+           <td>Student's Name :</td><td> <input type="text" name="studentName"/></td>
+           </tr>
+        
+        <tr>
+           <td>Student's Hobby :</td><td> <input type="text" name="studentHobby"/></td>
+           </tr>
+           
+           <tr>
+           <td>Student's Mobile :</td><td> <input type="text" name="studentMobile"/></td>
+           </tr>
+           
+           <tr>
+           <td>Student's DOB :</td><td> <input type="text" name="studentDOB"/></td>
+           </tr>
+           
+           <tr>
+           <td>Student's  Skills:</td><td>  <select name="text" name="studentSkills"multiple>
+                                            
+                                            <option value="java core">java core</option>
+                                            <option value="spring core">spring core</option>
+                                            <option value="spring MVC">spring MVC</option>
+                                            </select><td>
+             </tr>                               
+           
+           <tr>
+                <td><input type="submit" value="submit form"></td></tr>
+           
+    </table>
+    
+    </form>
+</body>
+</html>
+
+admissionsuccess file::
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+</head>
+<body>
+<h1>${headerMessage}</h1>
+<h3>Congratulations!! processes your application</h3>
+<h2>Details submitted by you:</h2>
+<table>
+
+<tr>
+ <td>Student Name:</td>
+ <td>${student1.studentName}</td>
+ </tr>
+ 
+ <tr>
+ <td>Student Hobby:</td>
+ <td>${student1.studentHobby}</td>
+ </tr>
+ 
+ <tr>
+ <td>Student Mobile:</td>
+ <td>${student1.studentMobile}</td>
+ </tr>
+ 
+ <tr>
+ <td>Student DOB:</td>
+ <td>${student1.studentDOB}</td>
+ </tr>
+ 
+ <tr>
+ <td>Student Skills:</td>
+ <td>${student1.studentSkills}</td>
+ </tr>
+</table>
+</body>
+</html>
+
+-remaing files are same as above model program
+
+->for init binder::remaing all are same as the above one
+
+package com.hellocontroller;
+
+import java.util.Map;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+@Controller
+public class StudentAdmissionController {
+	
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		
+		binder.setDisallowedFields(new String[] {"studentMobile"});
+		
+	}
+	
+	@RequestMapping(value="/admissionForm.html", method = RequestMethod.GET)
+	public ModelAndView getAdmissionForm() {
+		ModelAndView model1= new ModelAndView("AdmissionForm");
+		return model1;
+	}
+	
+	
+	@RequestMapping(value="/submitAdmissionForm.html", method = RequestMethod.POST)
+	public ModelAndView submitAdmissionForm(@ModelAttribute("student1") Student student1) {
+		ModelAndView model = new ModelAndView("AdmissionSuccess");
+		model.addObject("headerMessage","cmr college of engineering and technology");
+		
+		return model;
+	}
+
+}
+
+->FORM VALIDATIONS::
+
+package com.hellocontroller;
+
+import java.util.Map;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import jakarta.validation.Valid;
+
+@Controller
+public class StudentAdmissionController {
+	
+	/*@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		
+		binder.setDisallowedFields(new String[] {"studentMobile"});
+		
+	}*/
+	
+	@RequestMapping(value="/admissionForm.html", method = RequestMethod.GET)
+	public ModelAndView getAdmissionForm() {
+		ModelAndView model1= new ModelAndView("AdmissionForm");
+		return model1;
+	}
+	
+	
+	@RequestMapping(value="/submitAdmissionForm.html", method = RequestMethod.POST)
+	public ModelAndView submitAdmissionForm( @Valid @ModelAttribute("student1") Student student1,BindingResult result) {
+		
+		if(result.hasErrors()) {
+			ModelAndView model = new ModelAndView("AdmissionForm");
+			return model;
+		}
+		ModelAndView model = new ModelAndView("AdmissionSuccess");
+		model.addObject("headerMessage","cmr college of engineering and technology");
+		
+		return model;
+	}
+
+}
+
+student file::
+
+package com.hellocontroller;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+import jakarta.validation.constraints.Size;
+
+public class Student {
+	
+	private String studentName;
+	
+	@Size(min=3,max=10)
+	private String studentHobby;
+	
+	private Long studentMobile;
+	private Date studentDOB;
+	private ArrayList<String> studentSkills;
+	
+	
+	public Long getStudentMobile() {
+		return studentMobile;
+	}
+	public void setStudentMobile(Long studentMobile) {
+		this.studentMobile = studentMobile;
+	}
+	public Date getStudentDOB() {
+		return studentDOB;
+	}
+	public void setStudentDOB(Date studentDOB) {
+		this.studentDOB = studentDOB;
+	}
+	public ArrayList<String> getStudentSkills() {
+		return studentSkills;
+	}
+	public void setStudentSkills(ArrayList<String> studentSkills) {
+		this.studentSkills = studentSkills;
+	}
+	public String getStudentName() {
+		return studentName;
+	}
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
+	}
+	public String getStudentHobby() {
+		return studentHobby;
+	}
+	public void setStudentHobby(String studentHobby) {
+		this.studentHobby = studentHobby;
+	}
+	
+	
+
+}
+-->remaining methods are same as the above program
+------------------------------------------------------------
+->REST API using @ResponseBody::
+->remaining are from above like student.java file
+package com.hellocontroller;
+
+import java.util.ArrayList;
+import java.util.Map;
+
+
+
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+
+
+
+
+@Controller
+public class StudentAdmissionController {
+	
+	/*@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		
+		binder.setDisallowedFields(new String[] {"studentMobile"});
+		
+	}*/
+	
+	@RequestMapping(value="/admissionForm.html", method = RequestMethod.GET)
+	public ModelAndView getAdmissionForm() {
+		ModelAndView model1= new ModelAndView("AdmissionForm");
+		return model1;
+	}
+	
+	
+	@RequestMapping(value="/submitAdmissionForm.html", method = RequestMethod.POST)
+	public ModelAndView submitAdmissionForm( @ModelAttribute("student1") Student student1,BindingResult result) {
+		
+		if(result.hasErrors()) {
+			ModelAndView model = new ModelAndView("AdmissionForm");
+			return model;
+		}
+		ModelAndView model = new ModelAndView("AdmissionSuccess");
+		model.addObject("headerMessage","cmr college of engineering and technology");
+		
+		return model;
+	}
+	@ResponseBody
+	@RequestMapping(value="/students", method=RequestMethod.GET)
+	public ArrayList<Student> getStudentsList(){
+		Student student1 = new Student();
+		student1.setStudentName("the undertaker");
+		
+		Student student2 = new Student();
+		student2.setStudentName("the cena");
+		
+		ArrayList<Student> studentsList = new ArrayList<Student>();
+		
+		studentsList.add(student1);
+		studentsList.add(student2);
+		return studentsList;
+		
+		
+	}
+
+}
+->above continuation:
+package com.hellocontroller;
+
+import java.util.ArrayList;
+
+import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties({"studentMobile","studentSkills","studentHobby"})
+@JsonPropertyOrder({"studentDOB","studentName","studentMobile","studentSkills","studentHobby"})
+public class Student {
+	
+	private String studentName;
+	
+	@JsonProperty("student_name")
+	private String studentHobby;
+	
+	private Long studentMobile;
+	private Date studentDOB;
+	private ArrayList<String> studentSkills;
+	
+	
+	public Long getStudentMobile() {
+		return studentMobile;
+	}
+	public void setStudentMobile(Long studentMobile) {
+		this.studentMobile = studentMobile;
+	}
+	public Date getStudentDOB() {
+		return studentDOB;
+	}
+	public void setStudentDOB(Date studentDOB) {
+		this.studentDOB = studentDOB;
+	}
+	public ArrayList<String> getStudentSkills() {
+		return studentSkills;
+	}
+	public void setStudentSkills(ArrayList<String> studentSkills) {
+		this.studentSkills = studentSkills;
+	}
+	public String getStudentName() {
+		return studentName;
+	}
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
+	}
+	public String getStudentHobby() {
+		return studentHobby;
+	}
+	public void setStudentHobby(String studentHobby) {
+		this.studentHobby = studentHobby;
+	}
+	
+	
+
+}
+
+->with pathvariable of rest api:;;
+
+package com.hellocontroller;
+
+import java.util.ArrayList;
+import java.util.Map;
+
+
+
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+
+
+
+
+@Controller
+public class StudentAdmissionController {
+	
+	/*@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		
+		binder.setDisallowedFields(new String[] {"studentMobile"});
+		
+	}*/
+	
+	@RequestMapping(value="/admissionForm.html", method = RequestMethod.GET)
+	public ModelAndView getAdmissionForm() {
+		ModelAndView model1= new ModelAndView("AdmissionForm");
+		return model1;
+	}
+	
+	
+	@RequestMapping(value="/submitAdmissionForm.html", method = RequestMethod.POST)
+	public ModelAndView submitAdmissionForm( @ModelAttribute("student1") Student student1,BindingResult result) {
+		
+		if(result.hasErrors()) {
+			ModelAndView model = new ModelAndView("AdmissionForm");
+			return model;
+		}
+		ModelAndView model = new ModelAndView("AdmissionSuccess");
+		model.addObject("headerMessage","cmr college of engineering and technology");
+		
+		return model;
+	}
+	@ResponseBody
+	@RequestMapping(value="/students", method=RequestMethod.GET)
+	public ArrayList<Student> getStudentsList(){
+		Student student1 = new Student();
+		student1.setStudentName("the undertaker");
+		
+		Student student2 = new Student();
+		student2.setStudentName("the cena");
+		
+		ArrayList<Student> studentsList = new ArrayList<Student>();
+		
+		studentsList.add(student1);
+		studentsList.add(student2);
+		return studentsList;
+		
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/students/{name}", method=RequestMethod.GET)
+	public Student getStudent(@PathVariable("name") String studentName) {
+		
+		//fetch the student's record using "studentName" from DB
+		Student student = new Student();
+		student.setStudentName(studentName);
+		student.setStudentHobby("WWE");
+		return student;
+	}
+
+
+}
+
+->@RestController:::
+-@requestbody:
+
+package com.hellocontroller;
+
+import java.util.ArrayList;
+
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class StudentInfoRESTAPIController {
+	
+	@RequestMapping(value="/students", method=RequestMethod.GET)
+	public ArrayList<Student> getStudentsList(){
+		Student student1 = new Student();
+		student1.setStudentName("the undertaker");
+		
+		Student student2 = new Student();
+		student2.setStudentName("the cena");
+		
+		ArrayList<Student> studentsList = new ArrayList<Student>();
+		
+		studentsList.add(student1);
+		studentsList.add(student2);
+		return studentsList;
+		
+	}
+	
+	@RequestMapping(value="/students/{name}", method=RequestMethod.GET)
+	public Student getStudent(@PathVariable("name") String studentName) {
+		
+		//fetch the student's record using "studentName" from DB
+		Student student = new Student();
+		student.setStudentName(studentName);
+		student.setStudentHobby("WWE");
+		return student;
+	}
+	
+    //*****************update student details by client*****************
+   @RequestMapping(value="/students/{name}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public boolean updateStudent(@PathVariable("name") String studentName, @RequestBody Student student) {
+	
+		System.out.println("Student Name: "+studentName);
+		System.out.println("Student Name: "+student.getStudentName()+ "Student Hobby: "+student.getStudentHobby());
+		
+		
+		return true;
+		
+	}
+		
+	
+	/*@RequestMapping(value="/students/{name}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Boolean> updateStudent(@PathVariable("name") String studentName, @RequestBody Student student) {
+		System.out.println("Student Name: "+studentName);
+		System.out.println("Student Name: "+student.getStudentName()+"Student Hobby: "+student.getStudentHobby());
+		
+		//HttpHeaders httpHeaders = new HttpHeaders();
+		//httpHeaders.add("Key1", "Value1");
+		//httpHeaders.add("Key2", "Value2");
+
+		
+		//return new ResponseEntity<Boolean>(true, httpHeaders, HttpStatus.OK);
+	}
+*/
+
+
+}
+
+
+JDBC PROGRAMS::
+
+package com.spring.jdbc.demo.jdbc.database;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import com.spring.jdbc.demo.jdbc.database.entity.Person;
+
+@Repository
+public class PersonjdbcDao {
+	
+	@Autowired
+	JdbcTemplate jdbcTemplate;
+	
+	//select * from person
+	public List<Person> findAll(){
+		
+		return jdbcTemplate.query("select * from person", 
+				new BeanPropertyRowMapper<Person>(Person.class));
+		
+		
+		
+	}
+
+}
+
+
+package com.spring.jdbc.demo.jdbc.database.entity;
+
+import java.util.Date;
+
+public class Person {
+	private int id;
+	private String name;
+	private String location;
+	private Date birthDate;
+   public Person() {
+		
+	}
+	public Person(int id, String name, String location, Date birthDate) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.location = location;
+		this.birthDate = birthDate;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	public Date getBirthDate() {
+		return birthDate;
+	}
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
+	@Override
+	public String toString() {
+		return "Person [id=" + id + ", name=" + name + ", location=" + location + ", birthDate=" + birthDate + "]";
+	}
+	
+	
+
+}
+
+
+package com.spring.jdbc.demo.jdbc;
+
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.spring.jdbc.demo.jdbc.database.PersonjdbcDao;
+import com.spring.jdbc.demo.jdbc.database.entity.Person;
+
+@SpringBootApplication
+public class Application implements CommandLineRunner{
+	
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	@Autowired
+	PersonjdbcDao dao;
+
+	public static void main(String[] args) {
+		SpringApplication.run(Application.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		logger.info("All uders -> {}",dao.findAll());
+		
+	}
+
+}
+
+
+-->finding by id::
+
+package com.spring.jdbc.demo.jdbc.database;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import com.spring.jdbc.demo.jdbc.database.entity.Person;
+
+@Repository
+public class PersonjdbcDao {
+	
+	@Autowired
+	JdbcTemplate jdbcTemplate;
+	
+public List<Person> findAll(){
+		
+		return jdbcTemplate.query
+				("select * from person", 
+				new BeanPropertyRowMapper<Person>(Person.class));
+		
+	}
+
+	
+	//select * from person
+	public Person findById(int id){
+		
+		return jdbcTemplate.queryForObject
+				("select * from person where id=?",
+				new Object[]{id}, 
+				new BeanPropertyRowMapper<Person>(Person.class));
+		
+		
+		
+	}
+
+}
+
+
+package com.spring.jdbc.demo.jdbc;
+
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.spring.jdbc.demo.jdbc.database.PersonjdbcDao;
+import com.spring.jdbc.demo.jdbc.database.entity.Person;
+
+@SpringBootApplication
+public class Application implements CommandLineRunner{
+	
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	@Autowired
+	PersonjdbcDao dao;
+
+	public static void main(String[] args) {
+		SpringApplication.run(Application.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		logger.info("All users -> {}",dao.findAll());
+		logger.info("users id 1001 -> {}",dao.findById(1001));
+		
+	}
+
+}
+
+->DELETING A ROW::
+
+package com.spring.jdbc.demo.jdbc.database;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import com.spring.jdbc.demo.jdbc.database.entity.Person;
+
+@Repository
+public class PersonjdbcDao {
+	
+	@Autowired
+	JdbcTemplate jdbcTemplate;
+	
+	//select * from person
+public List<Person> findAll(){
+		
+		return jdbcTemplate.query
+				("select * from person", 
+				new BeanPropertyRowMapper<Person>(Person.class));
+		
+	}
+
+	
+	//find by id
+	public Person findById(int id){
+		
+		return jdbcTemplate.queryForObject
+				("select * from person where id=?",
+				new Object[]{id}, 
+				new BeanPropertyRowMapper<Person>(Person.class));
+		
+	}
+	
+	//delete by id
+public int deleteById(int id){
+		
+		return jdbcTemplate.update
+				("delete from person where id=?",
+				new Object[]{id});
+		
+	}
+
+}
+
+
+package com.spring.jdbc.demo.jdbc;
+
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.spring.jdbc.demo.jdbc.database.PersonjdbcDao;
+import com.spring.jdbc.demo.jdbc.database.entity.Person;
+
+@SpringBootApplication
+public class Application implements CommandLineRunner{
+	
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	@Autowired
+	PersonjdbcDao dao;
+
+	public static void main(String[] args) {
+		SpringApplication.run(Application.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		logger.info("All users -> {}",dao.findAll());
+		logger.info("users id 1001 -> {}",dao.findById(1001));
+		logger.info("deleting user  id 1002 ->no of rows deleted - {}",dao.deleteById(1002));
+		
+	}
+
+}
+
+-inserting in to database:;
+
+package com.spring.jdbc.demo.jdbc.database;
+
+import java.sql.Timestamp;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import com.spring.jdbc.demo.jdbc.database.entity.Person;
+
+@Repository
+public class PersonjdbcDao {
+
+	@Autowired
+	JdbcTemplate jdbcTemplate;
+
+	// select * from person
+	public List<Person> findAll() {
+
+		return jdbcTemplate.query("select * from person", new BeanPropertyRowMapper<Person>(Person.class));
+
+	}
+
+	// find by id
+	public Person findById(int id) {
+
+		return jdbcTemplate.queryForObject("select * from person where id=?", new Object[] { id },
+				new BeanPropertyRowMapper<Person>(Person.class));
+
+	}
+
+	// delete by id
+	public int deleteById(int id) {
+		return jdbcTemplate.update("delete from person where id=?", 
+				new Object[] { id });
+
+	}
+	
+	// insert by id
+		public int insert(Person person) {
+			return jdbcTemplate.update("insert into person (id, name, location, birth_date)" 
+					                   +"values(?,?,?,?)" ,
+					                  new Object[] {person.getId(),person.getName(),person.getLocation(),new Timestamp(person.getBirthDate().getTime())});
+
+		}
+
+}
+
+
+package com.spring.jdbc.demo.jdbc;
+
+
+
+import java.sql.Date;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import com.spring.jdbc.demo.jdbc.database.PersonjdbcDao;
+import com.spring.jdbc.demo.jdbc.database.entity.Person;
+
+@SpringBootApplication
+public class Application implements CommandLineRunner{
+	
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	@Autowired
+	PersonjdbcDao dao;
+
+	public static void main(String[] args) {
+		SpringApplication.run(Application.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		logger.info("All users -> {}",dao.findAll());
+		logger.info("users id 1001 -> {}",dao.findById(1001));
+		logger.info("deleting user  id 1002 ->no of rows deleted - {}",dao.deleteById(1002));
+		logger.info("insert 1004->{}",
+				dao.insert(new Person(1004,"parth","india",new Date(0))));
+		
+	}
+
+}
+
+
+package com.spring.jdbc.demo.jdbc.database;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
+import com.spring.jdbc.demo.jdbc.database.entity.Person;
+
+@Repository
+public class PersonjdbcDao {
+
+	@Autowired
+	JdbcTemplate jdbcTemplate;
+	
+	class PersonRowMapper implements RowMapper<Person>{
+
+		@Override
+		public Person mapRow(ResultSet rs, int rowNum) throws SQLException {
+			Person person = new Person();
+			person.setId(rs.getInt("id"));
+			person.setName(rs.getString("name"));
+			person.setLocation(rs.getString("location"));
+			person.setBirthDate(rs.getTimestamp("birth_date"));
+			return person;
+		}
+		
+	}
+
+	// select * from person
+	public List<Person> findAll() {
+
+		return jdbcTemplate.query("select * from person", new PersonRowMapper());
+
+	}
+
+	// find by id
+	public Person findById(int id) {
+
+		return jdbcTemplate.queryForObject("select * from person where id=?", new Object[] { id },
+				new PersonRowMapper());
+
+	}
+
+	// delete by id
+	public int deleteById(int id) {
+		return jdbcTemplate.update("delete from person where id=?", 
+				new Object[] { id });
+
+	}
+	
+	// insert by id
+		public int insert(Person person) {
+			return jdbcTemplate.update("insert into person (id, name, location, birth_date)" 
+					                   +"values(?,?,?,?)" ,
+					                  new Object[] {person.getId(),person.getName(),person.getLocation(),new Timestamp(person.getBirthDate().getTime())});
+
+		}
+
+}
+
+ 
