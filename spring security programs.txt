@@ -1,0 +1,399 @@
+->giving the inmemory authentication::
+
+package com.springsecurity.demosecurity;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class DemoSecurityApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(DemoSecurityApplication.class, args);
+	}
+
+}
+
+
+package com.springsecurity.demosecurity;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HomeResource {
+	
+	@GetMapping("/")
+	public String home() {
+		return ("<h1>welcome</h1>");
+	}
+
+}
+
+
+package com.springsecurity.demosecurity;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+@EnableWebSecurity
+public class SecurityConfiguaration extends WebSecurityConfigurerAdapter {
+	
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+		//set your configuaration on the auth object
+		auth.inMemoryAuthentication()
+		   .withUser("user")
+		   .password("user")
+		   .roles("USER");
+		
+	}
+	
+	@Bean
+	public PasswordEncoder getPasswordEncoder() {
+		
+		return NoOpPasswordEncoder.getInstance();
+		
+	}
+	
+
+}
+
+
+->can access all the urls by admin::
+
+package com.springsecurity.demosecurity;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+@EnableWebSecurity
+public class SecurityConfiguaration extends WebSecurityConfigurerAdapter {
+	
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+		//set your configuaration on the auth object
+		auth.inMemoryAuthentication()
+		   .withUser("parth")
+		   .password("parth")
+		   .roles("USER")
+		   .and()
+		   .withUser("saap")
+		   .password("saap")
+		   .roles("ADMIN");
+		
+	}
+	
+	@Bean
+	public PasswordEncoder getPasswordEncoder() {
+		
+		return NoOpPasswordEncoder.getInstance();
+		
+	}
+	
+	@Override
+	protected void configure(HttpSecurity http) throws Exception{
+		http.authorizeRequests()
+		  
+		  //.antMatchers("/").permitAll()
+		  .antMatchers("/**").hasRole("ADMIN")
+		  .and().formLogin();
+		  
+		
+	}
+	
+	
+
+}
+
+->hasanyrole::
+
+package com.springsecurity.demosecurity;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+@EnableWebSecurity
+public class SecurityConfiguaration extends WebSecurityConfigurerAdapter {
+	
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+		//set your configuaration on the auth object
+		auth.inMemoryAuthentication()
+		   .withUser("parth")
+		   .password("parth")
+		   .roles("USER")
+		   .and()
+		   .withUser("saap")
+		   .password("saap")
+		   .roles("ADMIN");
+		
+	}
+	
+	@Bean
+	public PasswordEncoder getPasswordEncoder() {
+		
+		return NoOpPasswordEncoder.getInstance();
+		
+	}
+	
+	@Override
+	protected void configure(HttpSecurity http) throws Exception{
+		http.authorizeRequests()
+		  
+		  .antMatchers("/admin").hasRole("ADMIN")
+		  .antMatchers("/user").hasAnyRole("USER","ADMIN")
+		  .antMatchers("/").permitAll()
+		  .and().formLogin();
+		  
+		
+	}
+	
+	
+
+}
+
+
+->jdbc by using the default database::
+
+
+package com.security.jdbc.demosecurityjdbc;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HomeResource {
+	
+	@GetMapping("/")
+	public String home() {
+		return ("<h1>welcome</h1>");
+	}
+	
+	@GetMapping("/user")
+	public String user() {
+		return ("<h1>welcome user</h1>");
+	}
+	
+	@GetMapping("/admin")
+	public String admin() {
+		return ("<h1>welcome admin</h1>");
+	}
+	
+	
+
+
+}
+
+
+package com.security.jdbc.demosecurityjdbc;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+@EnableWebSecurity
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+	
+	
+   //tells the where the database by configuring the datasource bean
+	@Autowired
+	DataSource dataSource;
+	
+	//we have the authentication placeholder doing it here
+	//go and take the data from database if the user valid or not
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+		//set your configuration on the auth object
+		//created default datasource
+		auth.jdbcAuthentication()
+		   .dataSource(dataSource)
+		   .withDefaultSchema()
+		   .withUser(
+				   User.withUsername("user")
+				   .password("pass")
+				   .roles("USER")
+				   )
+		   .withUser(
+				   User.withUsername("admin")
+				   .password("123")
+				   .roles("ADMIN")
+				   );
+	}
+	
+	//we are doing the authorisation
+	@Override
+	protected void configure(HttpSecurity http) throws Exception{
+		http.authorizeRequests()
+		  
+		  .antMatchers("/admin").hasRole("ADMIN")
+		  .antMatchers("/user").hasAnyRole("USER","ADMIN")
+		  .antMatchers("/").permitAll()
+		  .and().formLogin(); //by default it gives login and logout
+		  
+
+}
+	@Bean
+	public PasswordEncoder getPasswordEncoder() {
+		
+		return NoOpPasswordEncoder.getInstance();
+		
+	}
+}
+
+->by taking the schema and data sql files
+
+INSERT INTO users(username,password,enabled)
+values('user','pass',true);
+
+INSERT INTO users(username,password,enabled)
+values('admin','pass',true);
+
+INSERT INTO authorities(username,authority)
+values('user','ROLE_USER');
+
+INSERT INTO authorities(username,authority)
+values('admin','ROLE_ADMIN');
+
+
+ create table users(
+      username varchar_ignorecase(50) not null primary key,
+      password varchar_ignorecase(50) not null,
+      enabled boolean not null);
+
+  create table authorities (
+      username varchar_ignorecase(50) not null,
+      authority varchar_ignorecase(50) not null,
+      constraint fk_authorities_users foreign key(username) references users(username));
+      create unique index ix_auth_username on authorities (username,authority);
+
+
+package com.security.jdbc.demosecurityjdbc;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HomeResource {
+	
+	@GetMapping("/")
+	public String home() {
+		return ("<h1>welcome</h1>");
+	}
+	
+	@GetMapping("/user")
+	public String user() {
+		return ("<h1>welcome user</h1>");
+	}
+	
+	@GetMapping("/admin")
+	public String admin() {
+		return ("<h1>welcome admin</h1>");
+	}
+	
+	
+
+
+}
+
+
+
+
+
+package com.security.jdbc.demosecurityjdbc;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+@EnableWebSecurity
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+	
+	
+   //tells the where the database by configuring the datasource bean
+	@Autowired
+	DataSource dataSource;
+	
+	//we have the authentication placeholder doing it here
+	//go and take the data from database if the user valid or not
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception{
+		//set your configuration on the auth object
+		//created default datasource
+		auth.jdbcAuthentication()
+		   .dataSource(dataSource);
+		   
+	}
+	
+	//we are doing the authorisation
+	@Override
+	protected void configure(HttpSecurity http) throws Exception{
+		http.authorizeRequests()
+		  
+		  .antMatchers("/admin").hasRole("ADMIN")
+		  .antMatchers("/user").hasAnyRole("USER","ADMIN")
+		  .antMatchers("/").permitAll()
+		  .and().formLogin(); //by default it gives login and logout
+		  
+
+}
+	@Bean
+	public PasswordEncoder getPasswordEncoder() {
+		
+		return NoOpPasswordEncoder.getInstance();
+		
+	}
+}
+
+
+
+package com.security.jdbc.demosecurityjdbc;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Component;
+
+@Component
+@SpringBootApplication
+public class DemoSecurityjdbcApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(DemoSecurityjdbcApplication.class, args);
+	}
+
+}
+--------------------------------------------------------------------
+
+
+
+ 
